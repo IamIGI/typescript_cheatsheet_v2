@@ -1,8 +1,15 @@
 "use strict";
-let username = 'Igor0';
-console.log(username);
-let a = 12;
-let b = 6;
-let c = 2;
-console.log(a / b);
-console.log(c * b);
+let myName = 'Igor';
+let meaningOfLife;
+let isLoading;
+let album; // union type;
+myName = 'Igor';
+meaningOfLife = 42;
+isLoading = true;
+album = '1998';
+const sum = (a, b) => {
+    return a + b;
+};
+let postId; //400 or "400"
+let isActive; // 0/1 or true/false
+let re = /\w+/g; // regex data type
