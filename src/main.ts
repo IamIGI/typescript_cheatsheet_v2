@@ -1,113 +1,71 @@
-class Coder {
-    //once the name is assign it can not be change
-    // assigning a value made arg optional: example: protected lang: string = 'Typescript'
-    constructor(
-        public readonly name: string,
-        public music: string,
-        private age: number, // only in this class
-        protected lang: string = 'Typescript' //protected also could be access from subclasses
-    ) {
-        this.name = name;
-        this.music = music;
-        this.age = age;
-        this.lang = lang;
-    }
+// Index signature
 
-    public getAge() {
-        return `Hello, I'm ${this.age}`;
-    }
+interface TransactionObj {
+    readonly [index: string]: number;
+    Pizza: number;
+    Books: number;
+    Job: number;
 }
+// interface TransactionObj {
+//     readonly [index: string]: number; // index signature -> all of the keys will be string,
+//     // all of the values will be number;
+//     //readonly - let user just read given property
+// }
 
-const Igor = new Coder('Igor', 'Rock', 24);
+const todaysTransactions: TransactionObj = {
+    Pizza: -11,
+    Books: -5,
+    Job: 50,
+};
 
-console.log(Igor.getAge());
+let prop: string = 'Pizza';
+console.log(todaysTransactions[prop]);
 
-class WebDev extends Coder {
-    constructor(public computer: string, name: string, music: string, age: number) {
-        super(name, music, age);
-        this.computer = computer;
+const todaysNet = (transactions: TransactionObj): number => {
+    let total = 0;
+    for (const transaction in transactions) {
+        total += transactions[transaction];
     }
+    return total;
+};
 
-    public getLang() {
-        return `I write ${this.lang}`;
-    }
-}
+console.log(todaysNet(todaysTransactions));
 
-const Sara = new WebDev('Mac', 'Sara', 'LoFi', 18);
+console.log(todaysTransactions['Dave']);
 
-console.log(Sara.getLang());
-// console.log(Sara.age)
-// console.log(Sara.lang)
-//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////
 
-interface Musician {
+interface Student {
+    // [key: string]: string | number | number[] | undefined;
     name: string;
-    instrument: string;
-    play(action: string): string;
+    GPA: number;
+    classes?: number[];
 }
 
-class Guitarist implements Musician {
-    name: string;
-    instrument: string;
+const student: Student = {
+    name: 'Doug',
+    GPA: 3.5,
+    classes: [100, 200],
+};
 
-    constructor(name: string, instrument: string) {
-        this.name = name;
-        this.instrument = instrument;
-    }
+// console.log(student.test);
 
-    play(action: string) {
-        return `${this.name} ${action} the ${this.instrument}`;
-    }
+for (const key in student) {
+    console.log(`${key}: ${student[key as keyof Student]}`);
 }
 
-const Page = new Guitarist('Jimmy', 'guitar');
+Object.keys(student).map((key) => console.log(student[key as keyof typeof student]));
 
-console.log(Page.play('strums'));
-/////////////////////////////////////////////////////
+const logStudentKey = (student: Student, key: keyof Student): void => {
+    console.log(`Student ${key}: ${student[key]}`);
+};
 
-class Peeps {
-    static count: number = 0; //static means that 'count' is not applied to any instance, it is applied to class itself
-    static getCount(): number {
-        return Peeps.count;
-    }
+logStudentKey(student, 'name');
 
-    public id: number;
+///////////////////////////////////////////////
 
-    constructor(public name: string) {
-        this.name = name;
-        this.id = ++Peeps.count;
-    }
+interface Incomes {
+    [key: string]: number;
 }
 
-const John = new Peeps('John');
-const Steve = new Peeps('Steve');
-const Amy = new Peeps('Amy');
-console.log(Steve.id);
-console.log(Amy.id);
-console.log(Peeps.count);
-///////////////////////////////////////////////////////////////
-
-class Bands {
-    private dataState: string[];
-    constructor() {
-        this.dataState = [];
-    }
-
-    public get data(): string[] {
-        return this.dataState;
-    }
-
-    public set data(value: string[]) {
-        if (Array.isArray(value) && value.every((element) => typeof element === 'string')) {
-            this.dataState = value;
-            return;
-        } else throw new Error('Param is not an array of strings');
-    }
-}
-
-const MyBands = new Bands();
-MyBands.data = ['Neil Yound', 'Led Zapline'];
-console.log(MyBands.data);
-MyBands.data = [...MyBands.data, 'Biadoliny'];
-console.log(MyBands.data);
-MyBands.data = ['Van Halen'];
+type Streams = 'salary' | 'bonus' | 'sidehustle';
